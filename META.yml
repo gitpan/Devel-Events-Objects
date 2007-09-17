@@ -1,14 +1,13 @@
 --- #YAML:1.0
 name:                Devel-Events-Objects
-version:             0.01
+version:             0.02
 abstract:            ~
 license:             ~
 generated_by:        ExtUtils::MakeMaker version 6.32
 distribution_type:   module
 requires:     
-    Devel::Events:                 0
+    Devel::Events:                 0.03
     Task::Weaken:                  0
-    Test::Exception:               0
     Test::use::ok:                 0
     Tie::RefHash::Weak:            0.06
     Variable::Magic:               0.04

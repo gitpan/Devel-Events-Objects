@@ -4,29 +4,19 @@ use strict;
 use warnings;
 
 use Test::More 'no_plan';
-use Test::Exception;
 
 use ok 'Devel::Events::Generator::Objects';
 
-{
-	package Handler;
-	sub new {
-		my ( $class, $h ) = @_;
-		bless $h, $class;
-	}
+use Devel::Events::Handler::Callback;
 
-	sub new_event {
-		my ( $self, @event ) = @_;
-		$self->( @event );
-	}
-}
 my $file = quotemeta(__FILE__);
 
-throws_ok { bless "foo", "bar" } qr/^Can't bless non-reference value at $file line \d+/, "bless doesn't poop errors";
+eval { bless "foo", "bar" };
+like( $@, qr/^Can't bless non-reference value at $file line \d+/, "bless doesn't poop errors");
 
 my @events;
 
-my $h = Handler->new(sub {
+my $h = Devel::Events::Handler::Callback->new(sub {
 	push @events, [ map { ref($_) ? "$_" : $_ } @_ ]; # don't leak
 });
 
@@ -46,7 +36,8 @@ is( @events, 0, "no events" );
 
 $gen->enable();
 
-throws_ok { bless "foo", "bar" } qr/^Can't bless non-reference value at $file line \d+/, "bless doesn't poop errors after registring handler either";
+eval { bless "foo", "bar" };
+like( $@, qr/^Can't bless non-reference value at $file line \d+/, "bless doesn't poop errors after registring handler either" );
 
 is( @events, 0, "no events" );
 
@@ -61,12 +52,12 @@ is_deeply(
 	\@events,
 	[
 		[ object_bless => (
+			generator => "$gen",
 			object    => $obj_str,
 			old_class => undef,
 			package   => "main",
 			file      => __FILE__,
 			line      => $line,
-			generator => "$gen"
 		) ],
 	],
 	"event log",
@@ -83,12 +74,12 @@ is_deeply(
 	\@events,
 	[
 		[ object_bless => (
+			generator => "$gen",
 			object    => $obj_str,
 			old_class => "Some::Class",
 			package   => "main",
 			file      => __FILE__,
 			line      => $line,
-			generator => "$gen"
 		) ],
 	],
 	"event log",
@@ -105,7 +96,7 @@ no warnings 'uninitialized'; # wtf?!
 is_deeply(
 	\@events,
 	[
-		[ object_destroy => ( object => $hash_str, generator => "$gen" ) ],
+		[ object_destroy => ( generator => "$gen", object => $hash_str ) ],
 	],
 	"event log",
 );

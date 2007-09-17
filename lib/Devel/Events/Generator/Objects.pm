@@ -100,7 +100,7 @@ sub bless {
 sub object_bless {
     my ( $self, $object, @args ) = @_;
 
-	$self->generate_event( object_bless => object => $object, @args );
+	$self->send_event( object_bless => object => $object, @args );
 	
 	$self->track_object($object);
 }
@@ -108,22 +108,17 @@ sub object_bless {
 sub object_destroy {
 	my ( $self, $object, @args ) = @_;
 
-	$self->generate_event( object_destroy => object => $object, @args );
+	$self->send_event( object_destroy => object => $object, @args );
 
 	$self->untrack_object( $object );
-}
-
-sub generate_event {
-	my ( $self, $type, @event ) = @_;
-
-	$self->send_event( $type => ( @event, generator => $self ) );
 }
 
 use constant tracker_magic => Variable::Magic::wizard(
 	free => sub {
 		my ( $object, $objs ) = @_;
-		foreach my $self ( @{ $objs || [] } ) {
-			$self->object_destroy( $object ) if defined $self; # might disappear in global destruction
+		local $@;
+		foreach my $self ( grep { defined } @{ $objs || [] } ) {
+			eval { $self->object_destroy( $object ) } # might disappear in global destruction
 		}
 	},
 	data => sub {
@@ -214,6 +209,59 @@ with the reference address.
 
 L<Devel::Events::Handler::ObjectTracker> contains a detailed usage example.
 
+=head1 EVENTS
+
+=over 4
+
+=item object_bless
+
+When the generator is enabled, this event will fire on every call to C<bless>
+for all code loaded after this module was loaded.
+
+In the future this event might omit objects created during event handling, but
+currently it does not.
+
+=over 4
+
+=item object
+
+The object that was blessed
+
+=item old_class
+
+If this is a rebless then this parameter contains the class the object was in just before the bless.
+
+=item package
+
+=item file
+
+=item line
+
+These fields correspond to the location o the call to C<bless>.
+
+=back
+
+=item object_destroy
+
+For every object created while the generator was enabled, magic to track
+destruction will be attached. When the object is freed this magic callback will
+fire this event.
+
+=over 4
+
+=item object
+
+This field contains a reference to the object.
+
+B<NOTE:> by the time this callback fires the object is no longer blessed. Be
+sure to keep track of the class of every refaddr as reported by C<object_bless>
+in your handler if you need to know the class the object belonged to at destroy
+time..
+
+=back
+
+=back
+
 =head1 METHODS
 
 =over 4
@@ -246,10 +294,6 @@ Calls C<rack_object>.
 Generates the C<object_destroy> event.
 
 Calls C<untrack_object>.
-
-=item generate_event
-
-Convenience method used by the previous two methods.
 
 =item tracker_magic
 

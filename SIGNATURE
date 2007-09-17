@@ -16,17 +16,17 @@ Hash: SHA1
 
 SHA1 9d3973e524fafd1ef57dbc32260061ee52f834da MANIFEST
 SHA1 ddb918d4e02cc06f4b9fe77adeca65403f8fdd56 MANIFEST.SKIP
-SHA1 d99889da47608925dffcd3bbb9775fa232707fbb META.yml
-SHA1 330f65b80cc89ca6a2c6040d5d865a969cc14262 Makefile.PL
-SHA1 3f55a634a65de232ed731087e0db0fd6c32e5f33 lib/Devel/Events/Generator/Objects.pm
-SHA1 4fb21ec41c0f480e293ddc7e924c7d3205802e6b lib/Devel/Events/Handler/ObjectTracker.pm
-SHA1 8574a90e332c2f1a315140c0c5a6ffa92b295072 lib/Devel/Events/Objects.pm
-SHA1 15af7192c349478d551a87d4fe276907ea131473 t/010_generator_objects.t
+SHA1 2ebbcdbc2abee6dcd3c9412a495d19da7e7cf08e META.yml
+SHA1 767e6e7dd7c9907119cc2d51df1acf597deeac78 Makefile.PL
+SHA1 3a2f3dd9d273857f3da62c1b179fd989cfd240a1 lib/Devel/Events/Generator/Objects.pm
+SHA1 a2a1592787d7f7802661b945b3b0f02a5478b21e lib/Devel/Events/Handler/ObjectTracker.pm
+SHA1 897b978c02c4a9a15b5e76b5594390570cddc502 lib/Devel/Events/Objects.pm
+SHA1 0dce7adb0aeb0c4d3cd9e82719c80ee5191aca7f t/010_generator_objects.t
 SHA1 9be58897d084fd2b93cad77af427f08bf502f4fb t/031_handler_objecttracker.t
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.7 (Darwin)
 
-iD8DBQFG6H0mVCwRwOvSdBgRAu9eAJ0VFiD8PU7Cymv0X35HR5bE6D7EHgCggKfL
-mjGCwU+vC9Iu+ygSEwWgEc0=
-=2nJI
+iD8DBQFG7dY6VCwRwOvSdBgRAiIBAJ41+0AkRMQDGKRhrSO0V5VA+zOuFgCfS88L
+4kQRIwgVP7xGSkZvYRgQHwU=
+=2wLo
 -----END PGP SIGNATURE-----

@@ -11,11 +11,10 @@ WriteMakefile(
 	SIGN         => 1,
 	PL_FILES     => { },
 	PREREQ_PM    => {
-		'Devel::Events'      => 0,
+		'Devel::Events'      => '0.03',
 		'Tie::RefHash::Weak' => '0.06',
 		'Variable::Magic'    => '0.04',
 		'Task::Weaken'       => 0,
-		'Test::Exception'    => 0,
 		'Test::use::ok'      => 0,
 	},
 );
