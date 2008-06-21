@@ -32,6 +32,8 @@ is( @events, 0, "no events" );
 
 bless( {}, "Some::Class" );
 
+{ package Some::Class; ::isa_ok( bless({}), "Some::Class") }
+
 is( @events, 0, "no events" );
 
 $gen->enable();
@@ -55,6 +57,7 @@ is_deeply(
 			generator => "$gen",
 			object    => $obj_str,
 			tracked   => 1,
+			class     => "Some::Class",
 			old_class => undef,
 			package   => "main",
 			file      => __FILE__,
@@ -66,7 +69,7 @@ is_deeply(
 
 @events = ();
 
-bless( $obj, "Some::Other::Class" ); $line = __LINE__;
+{ package Some::Other::Class; bless($obj); $line = __LINE__ }
 $obj_str = "$obj";
 
 is( @events, 1, "one event" );
@@ -78,8 +81,9 @@ is_deeply(
 			generator => "$gen",
 			object    => $obj_str,
 			tracked   => 1,
+			class     => "Some::Other::Class",
 			old_class => "Some::Class",
-			package   => "main",
+			package   => "Some::Other::Class",
 			file      => __FILE__,
 			line      => $line,
 		) ],

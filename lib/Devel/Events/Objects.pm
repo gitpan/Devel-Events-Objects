@@ -5,7 +5,7 @@ package Devel::Events::Objects;
 use strict;
 use warnings;
 
-our $VERSION = "0.04";
+our $VERSION = "0.05";
 
 __PACKAGE__;
 
@@ -51,7 +51,7 @@ Devel::Events::Objects - Object tracking support for L<Devel::Events>
 		print "Leaked object: $object\n";
 
 		# the event that generated it
-		print Dumper( $object, $tracker->live_object->{$object} );
+		print Dumper( $object, $tracker->live_objects->{$object} );
 
 		find_cycle( $object );
 	}
